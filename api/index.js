@@ -1,12 +1,12 @@
 const express = require('express')
+const routes = require('./routes')
 
 const app = express()
-
 app.use(express.json())
 
-const port = 3000
+routes(app)
 
-app.get('/', (req, res) => res.json('okay'))
+const port = 3000
 
 app.listen(port, () => console.log(`server running on port ${port}`))
 
