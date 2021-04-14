@@ -131,6 +131,15 @@ class PessoasController {
       })
       .catch(error => res.status(500).json(error.message))
   }
+
+  static matriculasConfirmadas (req, res) {
+    const { idPessoa } = req.params
+
+    database.Pessoas.findByPk(idPessoa)
+      .then(pessoa => pessoa.getMatriculasConfirmadas())
+      .then(matriculas => res.json(matriculas))
+      .catch(error => res.status(500).json(error.message))
+  }
 }
 
 module.exports = PessoasController
