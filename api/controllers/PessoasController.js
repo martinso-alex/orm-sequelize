@@ -1,8 +1,14 @@
 const database = require('../models')
 
 class PessoasController {
-  static listar (req, res) {
+  static listarAtivos (req, res) {
     database.Pessoas.findAll()
+      .then((pessoas) => res.json(pessoas))
+      .catch((error) => res.json(error))
+  }
+
+  static listar (req, res) {
+    database.Pessoas.scope('todos').findAll()
       .then((pessoas) => res.json(pessoas))
       .catch((error) => res.json(error))
   }
