@@ -4,7 +4,7 @@ class TurmasController {
   static listar (req, res) {
     database.Turmas.findAll()
       .then((turmas) => res.json(turmas))
-      .catch((error) => res.json(error))
+      .catch((error) => res.status(500).json(error.message))
   }
 
   static buscarPorId (req, res) {
@@ -15,7 +15,7 @@ class TurmasController {
         if (turma) res.json(turma)
         else res.status(404).json(nivel)
       })
-      .catch((error) => res.json(error))
+      .catch((error) => res.status(500).json(error.message))
   }
 
   static criar (req, res) {
@@ -23,7 +23,7 @@ class TurmasController {
 
     database.Turmas.create(nivel)
       .then(turma => res.status(201).json(turma))
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static deletar (req, res) {
@@ -34,7 +34,7 @@ class TurmasController {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "turma não encontrada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static restaurar (req, res) {
@@ -45,7 +45,7 @@ class TurmasController {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "turma não deletada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static atualizar (req, res) {
@@ -58,7 +58,7 @@ class TurmasController {
         if (turma) res.json(turma)
         else res.status(404).json({"erro" : "turma não encontrada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 }
 

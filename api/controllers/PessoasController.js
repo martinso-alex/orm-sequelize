@@ -4,13 +4,13 @@ class PessoasController {
   static listarAtivos (req, res) {
     database.Pessoas.findAll()
       .then((pessoas) => res.json(pessoas))
-      .catch((error) => res.json(error))
+      .catch((error) => res.status(500).json(error.message))
   }
 
   static listar (req, res) {
     database.Pessoas.scope('todos').findAll()
       .then((pessoas) => res.json(pessoas))
-      .catch((error) => res.json(error))
+      .catch((error) => res.status(500).json(error.message))
   }
 
   static buscarPorId (req, res) {
@@ -21,7 +21,7 @@ class PessoasController {
         if (pessoa) res.json(pessoa)
         else res.status(404).json(pessoa)
       })
-      .catch((error) => res.json(error))
+      .catch((error) => res.status(500).json(error.message))
   }
 
   static criar (req, res) {
@@ -29,7 +29,7 @@ class PessoasController {
 
     database.Pessoas.create(pessoa)
       .then(pessoa => res.status(201).json(pessoa))
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static deletar (req, res) {
@@ -40,7 +40,7 @@ class PessoasController {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "pessoa não encontrada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static restaurar (req, res) {
@@ -51,7 +51,7 @@ class PessoasController {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "pessoa não deletada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static atualizar (req, res) {
@@ -64,7 +64,7 @@ class PessoasController {
         if (pessoa) res.json(pessoa)
         else res.status(404).json({"erro" : "pessoa não encontrada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static listarMatriculas (req, res) {
@@ -72,7 +72,7 @@ class PessoasController {
 
     database.Matriculas.findAll({where: {estudante_id: idPessoa}})
       .then((matriculas) => res.json(matriculas))
-      .catch((error) => res.json(error))
+      .catch((error) => res.status(500).json(error.message))
   }
 
   static buscarMatriculaPorId (req, res) {
@@ -85,7 +85,7 @@ class PessoasController {
         if (matricula) res.json(matricula)
         else res.status(404).json(matricula)
       })
-      .catch((error) => res.json(error))
+      .catch((error) => res.status(500).json(error.message))
   }
 
   static criarMatricula (req, res) {
@@ -94,7 +94,7 @@ class PessoasController {
 
     database.Matriculas.create(matricula)
       .then(matricula => res.status(201).json(matricula))
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static deletarMatricula (req, res) {
@@ -105,7 +105,7 @@ class PessoasController {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "matricula não encontrada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static restaurarMatricula (req, res) {
@@ -116,7 +116,7 @@ class PessoasController {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "matricula não deletada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 
   static atualizarMatricula (req, res) {
@@ -129,7 +129,7 @@ class PessoasController {
         if (matricula) res.json(matricula)
         else res.status(404).json({"erro" : "matricula não encontrada"})
       })
-      .catch(error => res.json(error))
+      .catch(error => res.status(500).json(error.message))
   }
 }
 
