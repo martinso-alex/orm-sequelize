@@ -37,6 +37,17 @@ class TurmasController {
       .catch(error => res.json(error))
   }
 
+  static restaurar (req, res) {
+    const { id } = req.params
+
+    database.Turmas.restore({where: {id: id}})
+      .then((status) => {
+        if (status) res.status(204).end()
+        else res.status(404).json({"erro" : "turma não deletada"})
+      })
+      .catch(error => res.json(error))
+  }
+
   static atualizar (req, res) {
     const { id } = req.params
     const turma = req.body

@@ -32,7 +32,18 @@ class NiveisController {
     database.Niveis.destroy({where: {id: id}})
       .then((status) => {
         if (status) res.status(204).end()
-        else res.status(404).json({"erro" : "nível não encontrada"})
+        else res.status(404).json({"erro" : "nível não encontrado"})
+      })
+      .catch(error => res.json(error))
+  }
+
+  static restaurar (req, res) {
+    const { id } = req.params
+
+    database.Niveis.restore({where: {id: id}})
+      .then((status) => {
+        if (status) res.status(204).end()
+        else res.status(404).json({"erro" : "nível não deletado"})
       })
       .catch(error => res.json(error))
   }
@@ -45,7 +56,7 @@ class NiveisController {
       .then(() => database.Niveis.findByPk(id))
       .then((nivel) => {
         if (nivel) res.json(nivel)
-        else res.status(404).json({"erro" : "nível não encontrada"})
+        else res.status(404).json({"erro" : "nível não encontrado"})
       })
       .catch(error => res.json(error))
   }

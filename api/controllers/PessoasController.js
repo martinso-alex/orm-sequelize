@@ -102,6 +102,17 @@ class PessoasController {
       .catch(error => res.json(error))
   }
 
+  static restaurarMatricula (req, res) {
+    const { idMatricula, idPessoa } = req.params
+
+    database.Matriculas.restore({where: {id: idMatricula, estudante_id: idPessoa}})
+      .then((status) => {
+        if (status) res.status(204).end()
+        else res.status(404).json({"erro" : "matricula não deletada"})
+      })
+      .catch(error => res.json(error))
+  }
+
   static atualizarMatricula (req, res) {
     const { idMatricula, idPessoa } = req.params
     const matricula = req.body
