@@ -11,6 +11,8 @@ router.post('/pessoas', PessoasController.criar)
 
 router.delete('/pessoas/:id', PessoasController.deletar)
 
+router.post('/pessoas/:id/restaurar', PessoasController.restaurar)
+
 router.put('/pessoas/:id', PessoasController.atualizar)
 
 router.get('/pessoas/:idPessoa/matriculas', PessoasController.listarMatriculas)
