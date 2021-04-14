@@ -13,4 +13,14 @@ router.delete('/pessoas/:id', PessoasController.deletar)
 
 router.put('/pessoas/:id', PessoasController.atualizar)
 
+router.get('/pessoas/:idPessoa/matriculas', PessoasController.listarMatriculas)
+
+router.get('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.buscarMatriculaPorId)
+
+router.post('/pessoas/:idPessoa/matriculas', PessoasController.criarMatricula)
+
+router.delete('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.deletarMatricula)
+
+router.put('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.atualizarMatricula)
+
 module.exports = router

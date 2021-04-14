@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Matriculas.belongsTo(models.Pessoas, {foreignKey:'estudante_id'})
-      Matriculas.belongsTo(models.Turma, {foreignKey:'turma_id'})
+      Matriculas.belongsTo(models.Turmas, {foreignKey:'turma_id'})
     }
   };
   Matriculas.init({
