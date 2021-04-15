@@ -144,12 +144,29 @@ class PessoasController {
   static desativaPessoa (req, res) {
     const { id } = req.params
 
-    database.Pessoas.update({ativo: false}, {where: {id: id}})
-      .then(() =>
-        database.Matriculas.update({status: 'cancelado'}, {where: {estudante_id: id}})
+    database.sequelize.transaction().then(t => {
+      database.Pessoas.update(
+        {ativo: false}, 
+        {where: {id: id}}, 
+        {transaction: t}
       )
-      .then(() => res.json({mensagem: `matrículas do estudante ${id} canceladas`}))
-      .catch(error => res.status(500).json(error.message))
+        .then(() =>
+          database.Matriculas.update(
+            {status: 'cancelado'},
+            {where: {estudante_id: id}}, 
+            {transaction: t}
+          )
+        )
+        .then(() => {
+          t.commit()
+          res.json({mensagem: `matrículas do estudante ${id} canceladas`})
+        })
+        .catch(error => {
+          t.rollback()
+          res.status(500).json(error.message)
+        })
+    })
+    
   }
 }
 
