@@ -5,7 +5,11 @@ const router = Router()
 
 router.get('/turmas', TurmasController.listar)
 
+router.get('/turmas/lotadas', TurmasController.turmasLotadas)
+
 router.get('/turmas/:id', TurmasController.buscarPorId)
+
+router.get('/turmas/:id/quantidade-matriculas', TurmasController.matriculasPorTurma)
 
 router.post('/turmas', TurmasController.criar)
 

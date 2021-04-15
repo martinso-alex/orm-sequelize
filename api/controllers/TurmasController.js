@@ -1,8 +1,17 @@
 const database = require('../models')
+const { Op } = require('sequelize')
+const sequelize = require('sequelize')
 
 class TurmasController {
   static listar (req, res) {
-    database.Turmas.findAll()
+    const { data_inicial, data_final } = req.query
+    const where = {}
+
+    if (data_inicial || data_final) where.data_inicio = {}
+    if (data_inicial) where.data_inicio[Op.gte] = data_inicial
+    if (data_final) where.data_inicio[Op.lte] = data_final
+
+    database.Turmas.findAll({where})
       .then((turmas) => res.json(turmas))
       .catch((error) => res.status(500).json(error.message))
   }
@@ -58,6 +67,37 @@ class TurmasController {
         if (turma) res.json(turma)
         else res.status(404).json({"erro" : "turma não encontrada"})
       })
+      .catch(error => res.status(500).json(error.message))
+  }
+
+  static matriculasPorTurma (req, res) {
+    const { id } = req.params
+
+    database.Matriculas.findAndCountAll({
+      where: {
+        turma_id: id,
+        status: 'confirmado'
+      },
+      limit: 20,
+      order: [['estudante_id', 'ASC']]
+    })
+      .then(matriculas => {
+        if (matriculas.count) res.json(matriculas)
+        else res.status(404).json({"erro" : "turma sem matrículas confirmadas"})
+      })
+      .catch(error => res.status(500).json(error.message))
+  }
+
+  static turmasLotadas (req, res) {
+    const lotacaoTurma = 2
+
+    database.Matriculas.count({
+      where: {status: 'confirmado'},
+      attributes: ['turma_id'],
+      group: ['turma_id'],
+      having: sequelize.literal(`count(turma_id) >= ${lotacaoTurma}`)
+    })
+      .then(turmas => res.json(turmas))
       .catch(error => res.status(500).json(error.message))
   }
 }
