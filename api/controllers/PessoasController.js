@@ -89,8 +89,8 @@ class PessoasController {
   }
 
   static criarMatricula (req, res) {
-    const { idPessoa } = req.params
-    const matricula = {...req.body, estudante_id: idPessoa}
+    const { id } = req.params
+    const matricula = {...req.body, estudante_id: id}
 
     database.Matriculas.create(matricula)
       .then(matricula => res.status(201).json(matricula))
@@ -133,11 +133,22 @@ class PessoasController {
   }
 
   static matriculasConfirmadas (req, res) {
-    const { idPessoa } = req.params
+    const { id } = req.params
 
-    database.Pessoas.findByPk(idPessoa)
+    database.Pessoas.findByPk(id)
       .then(pessoa => pessoa.getMatriculasConfirmadas())
       .then(matriculas => res.json(matriculas))
+      .catch(error => res.status(500).json(error.message))
+  }
+
+  static desativaPessoa (req, res) {
+    const { id } = req.params
+
+    database.Pessoas.update({ativo: false}, {where: {id: id}})
+      .then(() =>
+        database.Matriculas.update({status: 'cancelado'}, {where: {estudante_id: id}})
+      )
+      .then(() => res.json({mensagem: `matrículas do estudante ${id} canceladas`}))
       .catch(error => res.status(500).json(error.message))
   }
 }

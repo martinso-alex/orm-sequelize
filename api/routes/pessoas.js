@@ -19,11 +19,13 @@ router.put('/pessoas/:id', PessoasController.atualizar)
 
 router.get('/pessoas/:idPessoa/matriculas', PessoasController.listarMatriculas)
 
-router.get('/pessoas/:idPessoa/matriculas-confirmadas', PessoasController.matriculasConfirmadas)
+router.get('/pessoas/:id/matriculas-confirmadas', PessoasController.matriculasConfirmadas)
 
 router.get('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.buscarMatriculaPorId)
 
-router.post('/pessoas/:idPessoa/matriculas', PessoasController.criarMatricula)
+router.post('/pessoas/:id/matriculas', PessoasController.criarMatricula)
+
+router.post('/pessoas/:id/desativar', PessoasController.desativaPessoa)
 
 router.delete('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.deletarMatricula)
 
