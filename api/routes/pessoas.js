@@ -1,36 +1,82 @@
 const { Router } = require('express')
 const PessoasController = require('../controllers/PessoasController')
+const MatriculasController = require('../controllers/MatriculasController')
 
 const router = Router()
 
-router.get('/pessoas', PessoasController.listarAtivos)
+router.get(
+  '/pessoas',
+  PessoasController.listarAtivos
+)
 
-router.get('/pessoas/todas', PessoasController.listar)
+router.get(
+  '/pessoas/todas',
+  PessoasController.listarTodos
+)
 
-router.get('/pessoas/:id', PessoasController.buscarPorId)
+router.get(
+  '/pessoas/:id',
+  PessoasController.buscarPorId
+)
 
-router.post('/pessoas', PessoasController.criar)
+router.post(
+  '/pessoas',
+  PessoasController.criar
+)
 
-router.delete('/pessoas/:id', PessoasController.deletar)
+router.delete(
+  '/pessoas/:id',
+  PessoasController.deletar
+)
 
-router.post('/pessoas/:id/restaurar', PessoasController.restaurar)
+router.post(
+  '/pessoas/:id/restaurar',
+  PessoasController.restaurar
+)
 
-router.put('/pessoas/:id', PessoasController.atualizar)
+router.post(
+  '/pessoas/:id/desativar',
+  PessoasController.desativaPessoa
+)
 
-router.get('/pessoas/:idPessoa/matriculas', PessoasController.listarMatriculas)
+router.put(
+  '/pessoas/:id',
+  PessoasController.atualizar
+)
 
-router.get('/pessoas/:id/matriculas-confirmadas', PessoasController.matriculasConfirmadas)
+router.get(
+  '/pessoas/:idPessoa/matriculas',
+  MatriculasController.listar
+)
 
-router.get('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.buscarMatriculaPorId)
+router.get(
+  '/pessoas/:id/matriculas-confirmadas',
+  MatriculasController.matriculasConfirmadas
+)
 
-router.post('/pessoas/:id/matriculas', PessoasController.criarMatricula)
+router.get(
+  '/pessoas/:idPessoa/matriculas/:idMatricula',
+  MatriculasController.buscar
+)
 
-router.post('/pessoas/:id/desativar', PessoasController.desativaPessoa)
+router.post(
+  '/pessoas/:id/matriculas',
+  MatriculasController.criar
+)
 
-router.delete('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.deletarMatricula)
+router.delete(
+  '/pessoas/:idPessoa/matriculas/:idMatricula',
+  MatriculasController.deletar
+)
 
-router.post('/pessoas/:idPessoa/matriculas/:idMatricula/restaurar', PessoasController.restaurarMatricula)
+router.post(
+  '/pessoas/:idPessoa/matriculas/:idMatricula/restaurar',
+  MatriculasController.restaurar
+)
 
-router.put('/pessoas/:idPessoa/matriculas/:idMatricula', PessoasController.atualizarMatricula)
+router.put(
+  '/pessoas/:idPessoa/matriculas/:idMatricula',
+  MatriculasController.atualizar
+)
 
 module.exports = router

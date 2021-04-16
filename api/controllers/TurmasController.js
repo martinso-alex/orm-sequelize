@@ -1,6 +1,6 @@
-const database = require('../models')
+const { TurmasService } = require('../services')
+const turmaService = new TurmasService()
 const { Op } = require('sequelize')
-const sequelize = require('sequelize')
 
 class TurmasController {
   static listar (req, res) {
@@ -11,7 +11,7 @@ class TurmasController {
     if (data_inicial) where.data_inicio[Op.gte] = data_inicial
     if (data_final) where.data_inicio[Op.lte] = data_final
 
-    database.Turmas.findAll({where})
+    turmaService.listar(where)
       .then((turmas) => res.json(turmas))
       .catch((error) => res.status(500).json(error.message))
   }
@@ -19,10 +19,10 @@ class TurmasController {
   static buscarPorId (req, res) {
     const { id } = req.params
 
-    database.Turmas.findByPk(id)
+    turmaService.buscarPorId(id)
       .then((turma) => {
         if (turma) res.json(turma)
-        else res.status(404).json(nivel)
+        else res.status(404).json({"erro" : "turma não encontrada"})
       })
       .catch((error) => res.status(500).json(error.message))
   }
@@ -30,7 +30,7 @@ class TurmasController {
   static criar (req, res) {
     const nivel = req.body
 
-    database.Turmas.create(nivel)
+    turmaService.criar(nivel)
       .then(turma => res.status(201).json(turma))
       .catch(error => res.status(500).json(error.message))
   }
@@ -38,7 +38,7 @@ class TurmasController {
   static deletar (req, res) {
     const { id } = req.params
 
-    database.Turmas.destroy({where: {id: id}})
+    turmaService.deletar(id)
       .then((status) => {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "turma não encontrada"})
@@ -49,7 +49,7 @@ class TurmasController {
   static restaurar (req, res) {
     const { id } = req.params
 
-    database.Turmas.restore({where: {id: id}})
+    turmaService.restaurar(id)
       .then((status) => {
         if (status) res.status(204).end()
         else res.status(404).json({"erro" : "turma não deletada"})
@@ -61,8 +61,8 @@ class TurmasController {
     const { id } = req.params
     const turma = req.body
 
-    database.Turmas.update(turma, {where: {id:id}})
-      .then(() => database.Turmas.findByPk(id))
+    turmaService.atualizar(turma, id)
+      .then(() => turmaService.buscarPorId(id))
       .then((turma) => {
         if (turma) res.json(turma)
         else res.status(404).json({"erro" : "turma não encontrada"})
@@ -73,14 +73,7 @@ class TurmasController {
   static matriculasPorTurma (req, res) {
     const { id } = req.params
 
-    database.Matriculas.findAndCountAll({
-      where: {
-        turma_id: id,
-        status: 'confirmado'
-      },
-      limit: 20,
-      order: [['estudante_id', 'ASC']]
-    })
+    turmaService.matriculasPorTurma(id)
       .then(matriculas => {
         if (matriculas.count) res.json(matriculas)
         else res.status(404).json({"erro" : "turma sem matrículas confirmadas"})
@@ -91,12 +84,7 @@ class TurmasController {
   static turmasLotadas (req, res) {
     const lotacaoTurma = 2
 
-    database.Matriculas.count({
-      where: {status: 'confirmado'},
-      attributes: ['turma_id'],
-      group: ['turma_id'],
-      having: sequelize.literal(`count(turma_id) >= ${lotacaoTurma}`)
-    })
+    turmaService.turmasLotadas(lotacaoTurma)
       .then(turmas => res.json(turmas))
       .catch(error => res.status(500).json(error.message))
   }
